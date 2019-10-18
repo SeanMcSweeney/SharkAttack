@@ -27,7 +27,7 @@ new = YUV[:,:,1]
 G = cv2.cvtColor(I, cv2.COLOR_BGR2GRAY)
 
 #step two
-#ContrastUp = cv2.equalizeHist(G)
+ContrastUp = cv2.equalizeHist(Edit)
 
 #Kernel
 k = np.array([[-1,2,-1], [2,8,2], [-1,2,-1]], dtype=float)
@@ -35,12 +35,11 @@ k = k / 12
 
 withFilter = cv2.filter2D(I, ddepth=-1, kernel=k)
 
-ContrastUp = cv2.filter2D(G, ddepth=-1, kernel=k)
 
 #step three
 #Thresholding
 
-T = 18
+T = 50
 T, Simp = cv2.threshold(ContrastUp, thresh = T, maxval = 255, type = cv2.THRESH_BINARY_INV)
 
 Adapt = cv2.adaptiveThreshold(ContrastUp, maxValue = 255, adaptiveMethod = cv2.ADAPTIVE_THRESH_GAUSSIAN_C, thresholdType = cv2.THRESH_BINARY, blockSize = 7, C = 8)
@@ -57,8 +56,8 @@ ROI = cv2.bitwise_and(ROI1,ROI2)
 
 #cv2.imshow("image", Edit)
 #cv2.imshow("image", G)
-cv2.imshow("imageC", ContrastUp)
-#cv2.imshow("image", Simp)
+#cv2.imshow("imageC", ContrastUp)
+cv2.imshow("image", Simp)
 #cv2.imshow("image", ROI)
 #cv2.imshow("image", withFilter)
 #cv2.imshow("image", Adapt)
